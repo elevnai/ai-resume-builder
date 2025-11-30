@@ -5,16 +5,16 @@
 }
 
 :root {
-    --primary-color: #6366f1;
-    --primary-hover: #4f46e5;
-    --secondary-color: #8b5cf6;
+    --primary-color: #dc2626;
+    --primary-hover: #b91c1c;
+    --secondary-color: #ef4444;
     --success-color: #10b981;
-    --error-color: #ef4444;
+    --error-color: #dc2626;
     --text-dark: #1f2937;
     --text-light: #6b7280;
-    --bg-light: #f9fafb;
+    --bg-light: #fef2f2;
     --bg-white: #ffffff;
-    --border-color: #e5e7eb;
+    --border-color: #fecaca;
     --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
     --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
     --shadow-lg: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
@@ -22,7 +22,7 @@
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    background: linear-gradient(135deg, #dc2626 0%, #991b1b 100%);
     min-height: 100vh;
     padding: 2rem 1rem;
     color: var(--text-dark);
@@ -93,12 +93,12 @@ main {
 
 .file-upload-label:hover {
     border-color: var(--primary-color);
-    background: #f0f9ff;
+    background: #fef2f2;
 }
 
 .file-upload-label.drag-over {
     border-color: var(--primary-color);
-    background: #f0f9ff;
+    background: #fef2f2;
     transform: scale(1.02);
 }
 
@@ -129,7 +129,7 @@ textarea {
 textarea:focus {
     outline: none;
     border-color: var(--primary-color);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.1);
+    box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.1);
 }
 
 /* Button Styles */
@@ -304,7 +304,6 @@ footer p {
         flex: 1;
     }
 }
-
 
 /* Additional styles for formatted resume output */
 .resume-output h3.section-header {
