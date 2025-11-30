@@ -12,8 +12,10 @@ const errorSection = document.getElementById('errorSection');
 const errorMessage = document.getElementById('errorMessage');
 const copyBtn = document.getElementById('copyBtn');
 const downloadBtn = document.getElementById('downloadBtn');
+const downloadDocxBtn = document.getElementById('downloadDocxBtn');
 
 let selectedFile = null;
+let currentResumeText = '';
 
 // File upload handling
 resumeFile.addEventListener('change', (e) => {
@@ -86,7 +88,12 @@ tailorBtn.addEventListener('click', async () => {
 
         if (response.ok && data.success) {
             // Show result
-            tailoredResume.textContent = data.tailored_resume;
+            currentResumeText = data.tailored_resume;
+
+            // Format the resume with HTML for better display
+            const formattedHtml = formatResumeHTML(currentResumeText);
+            tailoredResume.innerHTML = formattedHtml;
+
             resultSection.classList.remove('hidden');
 
             // Scroll to result
@@ -104,10 +111,41 @@ tailorBtn.addEventListener('click', async () => {
     }
 });
 
+// Format resume text as HTML for better display
+function formatResumeHTML(text) {
+    let html = '';
+    const lines = text.split('\n');
+
+    for (let line of lines) {
+        line = line.trim();
+        if (!line) continue;
+
+        // Section headers (ALL CAPS)
+        if (line === line.toUpperCase() && line.length > 3 && !line.startsWith('•')) {
+            html += `<h3 class="section-header">${line}</h3>`;
+        }
+        // Bold text (markdown style)
+        else if (line.includes('**')) {
+            const formatted = line.replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>');
+            html += `<p class="job-title">${formatted}</p>`;
+        }
+        // Bullet points
+        else if (line.startsWith('•')) {
+            html += `<p class="bullet-point">${line}</p>`;
+        }
+        // Regular text
+        else {
+            html += `<p>${line}</p>`;
+        }
+    }
+
+    return html;
+}
+
 // Copy to clipboard
 copyBtn.addEventListener('click', async () => {
     try {
-        await navigator.clipboard.writeText(tailoredResume.textContent);
+        await navigator.clipboard.writeText(currentResumeText);
         const originalText = copyBtn.textContent;
         copyBtn.textContent = '✅ Copied!';
         setTimeout(() => {
@@ -118,9 +156,9 @@ copyBtn.addEventListener('click', async () => {
     }
 });
 
-// Download resume
+// Download as TXT
 downloadBtn.addEventListener('click', () => {
-    const blob = new Blob([tailoredResume.textContent], { type: 'text/plain' });
+    const blob = new Blob([currentResumeText], { type: 'text/plain' });
     const url = URL.createObjectURL(blob);
     const a = document.createElement('a');
     a.href = url;
@@ -129,6 +167,37 @@ downloadBtn.addEventListener('click', () => {
     a.click();
     document.body.removeChild(a);
     URL.revokeObjectURL(url);
+});
+
+// Download as formatted DOCX
+downloadDocxBtn.addEventListener('click', async () => {
+    try {
+        const response = await fetch('/api/download-docx', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+            },
+            body: JSON.stringify({
+                resume_text: currentResumeText
+            })
+        });
+
+        if (response.ok) {
+            const blob = await response.blob();
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'tailored_resume.docx';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+        } else {
+            showError('Failed to generate DOCX file');
+        }
+    } catch (error) {
+        showError('Error downloading DOCX: ' + error.message);
+    }
 });
 
 // Show error
