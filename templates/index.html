@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AI Resume Builder - Custom Tailor Your Resume</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>🚀 AI Resume Builder</h1>
+            <p class="subtitle">Custom tailor your resume using ChatGPT</p>
+        </header>
+
+        <main>
+            <div class="upload-section">
+                <div class="card">
+                    <h2>📄 Step 1: Upload Your Resume</h2>
+                    <div class="file-upload-wrapper">
+                        <input type="file" id="resumeFile" accept=".pdf,.docx,.txt" />
+                        <label for="resumeFile" class="file-upload-label">
+                            <span id="fileName">Choose file or drag here</span>
+                        </label>
+                        <p class="file-info">Supported formats: PDF, DOCX, TXT</p>
+                    </div>
+                </div>
+
+                <div class="card">
+                    <h2>🎯 Step 2: Paste Job Description</h2>
+                    <textarea 
+                        id="jobDescription" 
+                        placeholder="Paste the job description here...&#10;&#10;Include:&#10;- Job title&#10;- Required skills&#10;- Responsibilities&#10;- Qualifications"
+                        rows="10"
+                    ></textarea>
+                </div>
+
+                <button id="tailorBtn" class="btn-primary" disabled>
+                    <span id="btnText">✨ Tailor My Resume</span>
+                    <span id="btnLoader" class="loader hidden"></span>
+                </button>
+            </div>
+
+            <div id="resultSection" class="result-section hidden">
+                <div class="card result-card">
+                    <div class="result-header">
+                        <h2>✅ Your Tailored Resume</h2>
+                        <div class="result-actions">
+                            <button id="copyBtn" class="btn-secondary">📋 Copy</button>
+                            <button id="downloadBtn" class="btn-secondary">💾 Download</button>
+                        </div>
+                    </div>
+                    <div id="tailoredResume" class="resume-output"></div>
+                </div>
+            </div>
+
+            <div id="errorSection" class="error-section hidden">
+                <div class="error-card">
+                    <h3>❌ Error</h3>
+                    <p id="errorMessage"></p>
+                </div>
+            </div>
+        </main>
+
+        <footer>
+            <p>Made with ❤️ using OpenAI ChatGPT</p>
+            <p class="footer-note">Your data is processed securely and not stored</p>
+        </footer>
+    </div>
+
+    <script src="{{ url_for('static', filename='js/app.js') }}"></script>
+</body>
+</html>
